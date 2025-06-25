@@ -15,11 +15,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab }) => {
     (location.pathname === "/add-website" ? "My websites" : "My websites");
 
   const navItems = [
-    { label: "Marketpalce", path: "/" },
+    { label: "Marketpalce", path: "" },
     { label: "My websites", path: "/" },
-    { label: "My Orders", path: "/" },
-    { label: "My projects", path: "/" },
-    { label: "Recieved orders", path: "/" },
+    { label: "My Orders", path: "" },
+    { label: "My projects", path: "" },
+    { label: "Recieved orders", path: "" },
   ];
 
   return (

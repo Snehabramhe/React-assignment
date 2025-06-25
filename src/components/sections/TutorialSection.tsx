@@ -1,8 +1,9 @@
 import React from "react";
+import heroImage from "../../assets/hero-image.jpg";
 
 export const TutorialSection: React.FC = () => {
   return (
-    <div className="flex w-full p-6 items-center gap-48 max-lg:gap-8 max-lg:flex-col max-lg:text-center max-sm:p-4 rounded-md bg-white">
+    <div className="flex w-full items-center justify-between">
       <div className="flex w-[406px] max-lg:w-full max-lg:items-center flex-col items-start gap-[17px] flex-shrink-0">
         <div className="text-[#0F0C1B] text-2xl max-sm:text-xl max-sm:leading-7 font-semibold leading-10">
           Learn how to get best out of linksera
@@ -28,7 +29,7 @@ export const TutorialSection: React.FC = () => {
 
       <div className="w-[628px] max-lg:w-full max-lg:max-w-[500px] max-sm:h-[200px] h-[321px] max-lg:h-[280px] flex-shrink-0 rounded-md relative overflow-hidden bg-[#0F0C1B]">
         <img
-          src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=628&h=445&fit=crop"
+          src={heroImage}
           alt="Business professional working at desk"
           className="w-[667px] h-[445px] absolute left-[-17px] top-[-56px] object-cover"
         />

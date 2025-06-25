@@ -15,33 +15,26 @@ export const AddWebsite: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[rgba(242,244,250,1)] overflow-hidden">
+    <div className="min-h-screen w-full overflow-hidden">
       <Navbar activeTab="My websites" />
 
-      <div className="max-w-[1440px] mx-auto w-full m-0 pt-[82px] px-[102px] max-lg:pt-[60px] max-lg:px-[40px] max-sm:pt-[40px] max-sm:px-[20px] font-['DM_Sans'] bg-[#FDFCFF]">
+      <div className="mx-auto w-full m-0 pt-[82px] max-lg:pt-[60px] font-['DM_Sans']">
         {/* Header */}
-        <div className="text-[#0F0C1B] text-[32px] max-sm:text-[28px] max-sm:leading-9 font-semibold leading-[44px] tracking-[-0.25px] mb-[106px] max-sm:mb-[60px]">
+        {/* <div className="text-[#0F0C1B] text-[32px] max-sm:text-[28px] max-sm:leading-9 font-semibold leading-[44px] tracking-[-0.25px] mb-[106px] max-sm:mb-[60px]">
           Add a wesbite
-        </div>
+        </div> */}
 
         {/* Main Content */}
-        <div className="flex flex-col items-center gap-16 w-full max-w-[1283px] mx-auto">
+        <div className="flex flex-col items-center gap-16 w-full mx-auto">
           {/* Tutorial Section */}
           <TutorialSection />
 
           {/* Content Sections */}
-          <div className="flex flex-col items-center gap-[73px] w-full">
-            {/* Preconditions */}
+          <div className="flex flex-col items-center gap-[73px] w-full bg-red-200">
             <PreconditionsSection onToggle={handlePreconditionsToggle} />
-
-            {/* Website Details */}
-            <WebsiteDetailsForm />
-
-            {/* Create Offer */}
+            {/* <WebsiteDetailsForm />
             <CreateOfferForm />
-
-            {/* Article Specification */}
-            <ArticleSpecificationForm />
+            <ArticleSpecificationForm /> */}
           </div>
         </div>
       </div>
