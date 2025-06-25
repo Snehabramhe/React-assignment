@@ -30,11 +30,11 @@ export const AddWebsite: React.FC = () => {
           <TutorialSection />
 
           {/* Content Sections */}
-          <div className="flex flex-col items-center gap-[73px] w-full bg-red-200">
-            <PreconditionsSection onToggle={handlePreconditionsToggle} />
-            {/* <WebsiteDetailsForm />
+          <div className="flex flex-col items-center gap-[73px] w-full">
+            <PreconditionsSection /> {/*// COMPLETE */}
+            <WebsiteDetailsForm />
             <CreateOfferForm />
-            <ArticleSpecificationForm /> */}
+            <ArticleSpecificationForm />
           </div>
         </div>
       </div>
