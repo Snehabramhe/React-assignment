@@ -3,7 +3,7 @@ export interface Website {
   domain: string;
   country: {
     name: string;
-    flagUrl: string;
+    flag: string;
   };
   language: string;
   category: string;

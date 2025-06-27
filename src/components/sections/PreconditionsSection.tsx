@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "../ui/button";
+import { Button } from "../ui/Button";
 import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 

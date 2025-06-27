@@ -14,42 +14,42 @@ function Table<T extends { id: string }>({
   return (
     <div className={`w-full ${className}`}>
       {/* Header */}
-      <div className="flex items-center font-['DM_Sans'] text-xs text-[#0f0c1b] font-semibold leading-tight">
+      <div className="flex w-full items-center font-dm-sans text-xs text-[#0f0c1b] font-semibold leading-none justify-start">
         {columns.map((column, index) => (
           <div
             key={String(column.key)}
-            className={`flex-1 min-h-[44px] px-3 py-3.5 bg-[rgba(97,63,221,0.02)] ${
-              index === 0 ? "min-w-[240px]" : ""
-            } ${column.className || ""}`}
+            className={`flex items-center justify-start self-stretch flex-1 min-h-11 pl-1 pr-[10px] pt-[14px] pb-[14px] gap-[10px] whitespace-nowrap bg-[rgba(97,63,221,0.02)] ${column.className || ""}`}
           >
             {column.label}
           </div>
         ))}
       </div>
 
-      {/* Body */}
+      {/* Body - No gap between header and body */}
       <div>
-        {data.map((item, rowIndex) => (
-          <div
-            key={item.id}
-            className={`flex items-center font-['Inter'] text-sm text-[#0F0C1B] font-normal tracking-wide leading-tight ${
-              rowIndex % 2 === 1 ? "bg-[rgba(97,63,221,0.02)]" : "bg-white"
-            }`}
-          >
-            {columns.map((column, colIndex) => (
-              <div
-                key={String(column.key)}
-                className={`flex-1 min-h-[56px] px-3 py-5 ${
-                  colIndex === 0 ? "min-w-[240px]" : ""
-                } ${column.className || ""}`}
-              >
-                {column.render
-                  ? column.render(item[column.key], item)
-                  : String(item[column.key])}
-              </div>
-            ))}
-          </div>
-        ))}
+        {data.map((item, rowIndex) => {
+          const isAlternate = rowIndex % 2 === 1;
+          const rowBg = isAlternate
+            ? "bg-[rgba(97,63,221,0.02)]"
+            : "bg-[#FEFEFF]";
+
+          return (
+            <div key={item.id} className="flex items-center justify-start">
+              {columns.map((column, colIndex) => (
+                <div
+                  key={String(column.key)}
+                  className={`flex items-center justify-start text-[#0F0C1B] self-stretch flex-1 min-h-14 pl-1 pr-[10px] pt-[19px] pb-[19px] gap-[10px] font-inter text-[13px] font-normal tracking-[0.25px] leading-none ${
+                    column.className || ""
+                  } ${rowBg}`}
+                >
+                  {column.render
+                    ? column.render(item[column.key], item)
+                    : String(item[column.key])}
+                </div>
+              ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

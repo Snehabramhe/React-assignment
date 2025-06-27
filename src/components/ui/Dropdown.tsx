@@ -49,19 +49,20 @@ const Dropdown: React.FC<DropdownProps> = ({
       <button
         type="button"
         onClick={toggleDropdown}
-        className="w-full px-2.5 py-2.5 text-left border border-[#EAEAEA] rounded-md bg-white text-[#0F0C1B] text-sm font-normal tracking-wide flex items-center justify-between hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#613FDD] focus:border-transparent"
+        className="justify-center items-stretch rounded-md border border-solid border-[#EAEAEA] flex min-h-9 pl-[10px] pr-[10px] pt-[9px] pb-[9px] flex-col w-full bg-[#FEFEFF] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#613FDD] focus:border-transparent"
       >
-        <span className="truncate">
-          {selectedOption ? selectedOption.label : placeholder}
-        </span>
-        <div
-          className="w-2.5 h-1 bg-gray-400 bg-opacity-60 flex-shrink-0 ml-4"
-          style={{
-            clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-            transition: "transform 0.2s",
-          }}
-        />
+        <div className="flex w-full items-center gap-[100px] justify-between font-inter text-[13px] text-[#0F0C1B] font-normal tracking-[0.25px] leading-none">
+          <div className="text-[#0F0C1B] self-stretch my-auto truncate">
+            {selectedOption ? selectedOption.label : placeholder}
+          </div>
+          <div
+            className="bg-[rgba(179,179,179,0.6)] self-stretch flex my-auto w-[9px] flex-shrink-0 h-1 fill-[rgba(179,179,179,0.60)]"
+            style={{
+              transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.2s",
+            }}
+          />
+        </div>
       </button>
 
       {isOpen && (

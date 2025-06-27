@@ -5,15 +5,8 @@ import { WebsiteDetailsForm } from "../components/sections/WebsiteDetailsForm";
 import { CreateOfferForm } from "../components/sections/CreateOfferForm";
 import { ArticleSpecificationForm } from "../components/sections/ArticleSpecificationForm";
 import { Navbar } from "../components/layout";
-import { useWebsiteStore } from "../store/websiteStore";
 
 export const AddWebsite: React.FC = () => {
-  const { formData, updateFormData } = useWebsiteStore();
-
-  const handlePreconditionsToggle = () => {
-    updateFormData({ preconditionsAccepted: !formData.preconditionsAccepted });
-  };
-
   return (
     <div className="min-h-screen w-full overflow-hidden">
       <Navbar activeTab="My websites" />

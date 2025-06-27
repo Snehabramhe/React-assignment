@@ -34,7 +34,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
         )}
       </div>
       <label
-        className="text-[rgba(15,12,27,0.60)] text-sm font-normal leading-5 flex-1 cursor-pointer"
+        className="text-[rgba(15,12,27,0.60)] text-sm font-normal leading-5 flex-1 cursor-pointer text-left"
         onClick={() => onChange(value)}
       >
         {label}

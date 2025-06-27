@@ -1,4 +1,21 @@
 import { create } from "zustand";
+import { mockWebsites } from "../data/mockData";
+import type { Website } from "../types";
+
+interface NichePricing {
+  guestPosting: string;
+  linkInsertion: string;
+}
+
+interface GreyNichePricingData {
+  samePrice: boolean;
+  unifiedPrice: string;
+  niches: {
+    gambling: NichePricing;
+    crypto: NichePricing;
+    adult: NichePricing;
+  };
+}
 
 export interface WebsiteFormData {
   // Website Details
@@ -12,6 +29,13 @@ export interface WebsiteFormData {
   // Create Offer
   guestPostingPrice: number;
   linkInsertionPrice: number;
+
+  // Homepage Link
+  homepageLinkPrice: number;
+  offerGuidelines: string;
+
+  // Grey Niche Pricing
+  greyNichePricing: GreyNichePricingData;
 
   // Article Specifications
   writingIncluded: "yes" | "no";
@@ -31,10 +55,31 @@ export interface WebsiteFormData {
   preconditionsAccepted: boolean;
 }
 
+export interface WebsiteFilters {
+  category: string;
+  greyNiches: string;
+}
+
 interface WebsiteStore {
+  // Form data for website creation
   formData: WebsiteFormData;
   updateFormData: (data: Partial<WebsiteFormData>) => void;
   resetForm: () => void;
+
+  // Website listing and management
+  websites: Website[];
+  filteredWebsites: Website[];
+  filters: WebsiteFilters;
+  currentPage: number;
+  totalPages: number;
+  itemsPerPage: number;
+
+  // Actions
+  setFilters: (filters: Partial<WebsiteFilters>) => void;
+  setCurrentPage: (page: number) => void;
+  applyFilters: () => void;
+  addWebsite: (website: Website) => void;
+  removeWebsite: (id: string) => void;
 }
 
 const initialFormData: WebsiteFormData = {
@@ -46,6 +91,17 @@ const initialFormData: WebsiteFormData = {
   isOwner: false,
   guestPostingPrice: 54,
   linkInsertionPrice: 34,
+  homepageLinkPrice: 54,
+  offerGuidelines: "",
+  greyNichePricing: {
+    samePrice: false,
+    unifiedPrice: "54",
+    niches: {
+      gambling: { guestPosting: "54", linkInsertion: "54" },
+      crypto: { guestPosting: "54", linkInsertion: "" },
+      adult: { guestPosting: "54", linkInsertion: "" },
+    },
+  },
   writingIncluded: "yes",
   taggingPolicy: "no-tag",
   wordCountPolicy: "unlimited",
@@ -61,11 +117,78 @@ const initialFormData: WebsiteFormData = {
   preconditionsAccepted: true,
 };
 
-export const useWebsiteStore = create<WebsiteStore>((set) => ({
+const initialFilters: WebsiteFilters = {
+  category: "all",
+  greyNiches: "all",
+};
+
+export const useWebsiteStore = create<WebsiteStore>((set, get) => ({
   formData: initialFormData,
+  websites: mockWebsites,
+  filteredWebsites: mockWebsites,
+  filters: initialFilters,
+  currentPage: 1,
+  totalPages: Math.ceil(mockWebsites.length / 10),
+  itemsPerPage: 10,
+
   updateFormData: (data) =>
     set((state) => ({
       formData: { ...state.formData, ...data },
     })),
+
   resetForm: () => set({ formData: initialFormData }),
+
+  setFilters: (newFilters) =>
+    set((state) => {
+      const updatedFilters = { ...state.filters, ...newFilters };
+      return { filters: updatedFilters };
+    }),
+
+  setCurrentPage: (page) => set({ currentPage: page }),
+
+  applyFilters: () => {
+    const { websites, filters, itemsPerPage } = get();
+    let filtered = [...websites];
+
+    if (filters.category !== "all") {
+      filtered = filtered.filter((website) =>
+        website.category.toLowerCase().includes(filters.category.toLowerCase()),
+      );
+    }
+
+    if (filters.greyNiches !== "all") {
+      // Filter based on grey niches - this would need more specific logic
+      // based on how grey niches are structured in your data
+    }
+
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+    set({
+      filteredWebsites: filtered,
+      totalPages,
+      currentPage: 1, // Reset to first page when filters change
+    });
+  },
+
+  addWebsite: (website) =>
+    set((state) => {
+      const newWebsites = [...state.websites, website];
+      const totalPages = Math.ceil(newWebsites.length / state.itemsPerPage);
+      return {
+        websites: newWebsites,
+        filteredWebsites: newWebsites,
+        totalPages,
+      };
+    }),
+
+  removeWebsite: (id) =>
+    set((state) => {
+      const newWebsites = state.websites.filter((w) => w.id !== id);
+      const totalPages = Math.ceil(newWebsites.length / state.itemsPerPage);
+      return {
+        websites: newWebsites,
+        filteredWebsites: newWebsites,
+        totalPages,
+      };
+    }),
 }));

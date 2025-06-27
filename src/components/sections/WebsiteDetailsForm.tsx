@@ -1,22 +1,36 @@
 import React from "react";
-import { FormInput } from "../ui/FormInput";
-import { FormSelect } from "../ui/FormSelect";
+import { Input } from "../ui/Input";
+import { Label } from "../ui/Label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/Select";
+import { Textarea } from "../ui/Textarea";
 import { CategorySelector } from "../ui/CategorySelector";
 import { Checkbox } from "../ui/Checkbox";
 import { useWebsiteStore } from "../../store/websiteStore";
 
-const languageOptions = [
-  { value: "English", label: "English", flag: "us" },
-  { value: "Spanish", label: "Spanish", flag: "es" },
-  { value: "French", label: "French", flag: "fr" },
-  { value: "German", label: "German", flag: "de" },
+export const languageOptions = [
+  { value: "English", label: "English", flag: "🇺🇸" },
+  { value: "Spanish", label: "Spanish", flag: "🇪🇸" },
+  { value: "French", label: "French", flag: "🇫🇷" },
+  { value: "German", label: "German", flag: "🇩🇪" },
+  { value: "Hindi", label: "Hindi", flag: "🇮🇳" },
+  { value: "Chinese", label: "Chinese", flag: "🇨🇳" },
+  { value: "Arabic", label: "Arabic", flag: "🇸🇦" },
 ];
 
-const countryOptions = [
-  { value: "United States", label: "United states", flag: "us" },
-  { value: "Canada", label: "Canada", flag: "ca" },
-  { value: "United Kingdom", label: "United Kingdom", flag: "gb" },
-  { value: "Australia", label: "Australia", flag: "au" },
+export const countryOptions = [
+  { value: "United States", label: "United States", flag: "🇺🇸" },
+  { value: "Canada", label: "Canada", flag: "🇨🇦" },
+  { value: "United Kingdom", label: "United Kingdom", flag: "🇬🇧" },
+  { value: "Australia", label: "Australia", flag: "🇦🇺" },
+  { value: "India", label: "India", flag: "🇮🇳" },
+  { value: "Germany", label: "Germany", flag: "🇩🇪" },
+  { value: "Spain", label: "Spain", flag: "🇪🇸" },
 ];
 
 export const WebsiteDetailsForm: React.FC = () => {
@@ -32,37 +46,92 @@ export const WebsiteDetailsForm: React.FC = () => {
         <div className="flex w-full max-w-[1235px] flex-col items-start gap-[31px]">
           {/* Website URL and Language Row */}
           <div className="flex items-center gap-8 w-full max-lg:flex-col max-lg:gap-5">
-            <FormInput
-              label="Enter website"
-              placeholder="Website URL"
-              value={formData.websiteUrl}
-              onChange={(value) => updateFormData({ websiteUrl: value })}
-              type="url"
-              className="w-[264px] max-lg:w-full"
-            />
+            <div className="flex flex-col items-start gap-2 w-[264px] max-lg:w-full">
+              <Label htmlFor="website-url">Enter website</Label>
+              <Input
+                id="website-url"
+                type="url"
+                placeholder="Website URL"
+                value={formData.websiteUrl}
+                onChange={(e) => updateFormData({ websiteUrl: e.target.value })}
+                className="w-full"
+              />
+            </div>
 
-            <FormSelect
-              label="Website's Primary language"
-              value={formData.primaryLanguage}
-              onChange={(value) => updateFormData({ primaryLanguage: value })}
-              options={languageOptions}
-              className="w-[264px] max-lg:w-full"
-              showFlag
-            />
-          </div>
+            <div className="flex flex-col items-start gap-2 w-[264px] max-lg:w-full">
+              <Label htmlFor="primary-language">
+                Website's Primary language
+              </Label>
+              <Select
+                value={formData.primaryLanguage}
+                onValueChange={(value) =>
+                  updateFormData({ primaryLanguage: value })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    placeholder="Select language"
+                    defaultValue={formData.primaryLanguage}
+                  >
+                    {
+                      languageOptions.find(
+                        (lang) => lang.value === formData.primaryLanguage
+                      )?.flag
+                    }{" "}
+                    {formData.primaryLanguage}
+                  </SelectValue>
+                </SelectTrigger>
 
-          {/* Traffic Country */}
-          <div className="flex flex-col items-start gap-2 w-[264px] max-lg:w-full">
-            <FormSelect
-              label="Your Majority of traffic comes from"
-              value={formData.majorityTrafficCountry}
-              onChange={(value) =>
-                updateFormData({ majorityTrafficCountry: value })
-              }
-              options={countryOptions}
-              className="w-[264px] max-lg:w-full"
-              showFlag
-            />
+                <SelectContent>
+                  {languageOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      <span className="flex items-center gap-2">
+                        <span>{option.flag}</span>
+                        <span>{option.label}</span>
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Traffic Country */}
+            <div className="flex flex-col items-start gap-2 w-[264px] max-lg:w-full">
+              <Label htmlFor="traffic-country">
+                Your Majority of traffic comes from
+              </Label>
+              <Select
+                value={formData.majorityTrafficCountry}
+                onValueChange={(value) =>
+                  updateFormData({ majorityTrafficCountry: value })
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    placeholder="Select country"
+                    defaultValue={formData.majorityTrafficCountry}
+                  >
+                    {
+                      countryOptions.find(
+                        (c) => c.value === formData.majorityTrafficCountry
+                      )?.flag
+                    }{" "}
+                    {formData.majorityTrafficCountry}
+                  </SelectValue>
+                </SelectTrigger>
+
+                <SelectContent>
+                  {countryOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      <span className="flex items-center gap-2">
+                        <span>{option.flag}</span>
+                        <span>{option.label}</span>
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Categories */}
@@ -78,39 +147,15 @@ export const WebsiteDetailsForm: React.FC = () => {
           </div>
 
           {/* Description */}
-          <div className="flex w-[856px] max-sm:w-full h-[126px] flex-col items-start gap-2">
-            <div className="text-[#0F0C1B] text-sm font-medium leading-5">
-              Description of Website
-            </div>
-            <div className="flex h-[98px] p-2.5 flex-col items-start gap-2.5 w-full rounded-md border border-[#EAEAEA] shadow-sm relative bg-white">
-              <textarea
-                value={formData.description}
-                onChange={(e) =>
-                  updateFormData({ description: e.target.value })
-                }
-                placeholder="Description"
-                className="text-[rgba(15,12,27,0.40)] text-sm font-medium leading-5 w-full h-full resize-none border-none outline-none bg-transparent"
-              />
-
-              {/* Resize handle */}
-              <div className="absolute right-2.5 bottom-2.5 w-[4.875px] h-[4.875px] transform rotate-[-83.993deg]">
-                <svg
-                  width="6"
-                  height="7"
-                  viewBox="0 0 6 7"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M3.12075 6.08525L5.12293 3.61215M0.510159 6.35995L4.84823 1.00156"
-                    stroke="#0F0C1B"
-                    strokeWidth="0.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            </div>
+          <div className="flex w-[856px] max-sm:w-full flex-col items-start gap-2">
+            <Label htmlFor="description">Description of Website</Label>
+            <Textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => updateFormData({ description: e.target.value })}
+              placeholder="Description"
+              className="min-h-[98px] resize-none"
+            />
           </div>
 
           {/* Owner Checkbox */}

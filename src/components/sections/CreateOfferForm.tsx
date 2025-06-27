@@ -1,5 +1,9 @@
 import React, { useState } from "react";
+import { Input } from "../ui/Input";
+import { Label } from "../ui/Label";
 import { useWebsiteStore } from "../../store/websiteStore";
+import { GreyNichePricingForm } from "./GreyNichePricingForm";
+import { HomepageLinkForm } from "./HomepageLinkForm";
 
 export const CreateOfferForm: React.FC = () => {
   const { formData, updateFormData } = useWebsiteStore();
@@ -43,55 +47,59 @@ export const CreateOfferForm: React.FC = () => {
 
         {/* Content */}
         <div className="flex flex-col items-start gap-10 w-full">
-          <div className="flex items-start gap-8 w-full max-lg:flex-col max-lg:gap-5">
-            {/* Guest posting */}
-            <div className="flex flex-col items-start gap-5">
-              <div className="text-[#0F0C1B] text-sm font-medium leading-5">
-                Guest posting
-              </div>
-              <div className="flex items-center gap-8">
-                <div className="flex flex-col items-start gap-2.5 rounded-md border border-[#EAEAEA]">
-                  <div className="w-10 h-10 p-2.5 gap-2.5 rounded-l-md border-t border-r-[0.5px] border-b border-l border-[#EAEAEA] text-[#B3B3B3] text-center font-['Inter'] text-base font-normal leading-6 bg-[#FEFEFF]">
-                    $
+          {activeTab === "normal" && (
+            <div className="flex items-start gap-8 w-full max-lg:flex-col max-lg:gap-5">
+              {/* Guest posting */}
+              <div className="flex flex-col items-start gap-5">
+                <Label htmlFor="guest-posting">Guest posting</Label>
+                <div className="flex items-center">
+                  <div className="flex">
+                    <div className="w-10 h-10 px-3 py-2 rounded-l-md border border-r-0 border-[#EAEAEA] text-[#B3B3B3] text-center font-inter text-base font-normal leading-6 bg-[#FEFEFF] flex items-center justify-center">
+                      $
+                    </div>
+                    <Input
+                      id="guest-posting"
+                      type="number"
+                      value={formData.guestPostingPrice.toString()}
+                      onChange={(e) =>
+                        updateFormData({
+                          guestPostingPrice: parseInt(e.target.value) || 0,
+                        })
+                      }
+                      className="w-[222px] rounded-l-none border-l-0"
+                    />
                   </div>
-                  <input
-                    type="number"
-                    value={formData.guestPostingPrice}
-                    onChange={(e) =>
-                      updateFormData({
-                        guestPostingPrice: parseInt(e.target.value) || 0,
-                      })
-                    }
-                    className="w-[222px] text-[rgba(15,12,27,0.40)] text-sm font-medium leading-5 h-10 p-2.5 gap-2.5 rounded-r-md border-t border-r border-b border-[#EAEAEA] bg-[#FEFEFF] outline-none"
-                  />
                 </div>
               </div>
-            </div>
 
-            {/* Link insertion */}
-            <div className="flex flex-col items-start gap-5">
-              <div className="text-[#0F0C1B] text-sm font-medium leading-5">
-                Link insertion
-              </div>
-              <div className="flex items-center gap-8">
-                <div className="flex flex-col items-start gap-2.5 rounded-md border border-[#EAEAEA]">
-                  <div className="w-10 h-10 p-2.5 gap-2.5 rounded-l-md border-t border-r-[0.5px] border-b border-l border-[#EAEAEA] text-[#B3B3B3] text-center font-['Inter'] text-base font-normal leading-6 bg-[#FEFEFF]">
-                    $
+              {/* Link insertion */}
+              <div className="flex flex-col items-start gap-5">
+                <Label htmlFor="link-insertion">Link insertion</Label>
+                <div className="flex items-center">
+                  <div className="flex">
+                    <div className="w-10 h-10 px-3 py-2 rounded-l-md border border-r-0 border-[#EAEAEA] text-[#B3B3B3] text-center font-inter text-base font-normal leading-6 bg-[#FEFEFF] flex items-center justify-center">
+                      $
+                    </div>
+                    <Input
+                      id="link-insertion"
+                      type="number"
+                      value={formData.linkInsertionPrice.toString()}
+                      onChange={(e) =>
+                        updateFormData({
+                          linkInsertionPrice: parseInt(e.target.value) || 0,
+                        })
+                      }
+                      className="w-[222px] rounded-l-none border-l-0"
+                    />
                   </div>
-                  <input
-                    type="number"
-                    value={formData.linkInsertionPrice}
-                    onChange={(e) =>
-                      updateFormData({
-                        linkInsertionPrice: parseInt(e.target.value) || 0,
-                      })
-                    }
-                    className="w-[222px] text-[rgba(15,12,27,0.40)] text-sm font-medium leading-5 h-10 p-2.5 gap-2.5 rounded-r-md border-t border-r border-b border-[#EAEAEA] bg-[#FEFEFF] outline-none"
-                  />
                 </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {activeTab === "grey" && <GreyNichePricingForm />}
+
+          {activeTab === "homepage" && <HomepageLinkForm />}
         </div>
       </div>
     </div>

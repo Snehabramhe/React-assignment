@@ -4,27 +4,30 @@ import heroImage from "../../assets/hero-image.jpg";
 export const TutorialSection: React.FC = () => {
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="flex w-[406px] max-lg:w-full max-lg:items-center flex-col items-start gap-[17px] flex-shrink-0">
-        <div className="text-[#0F0C1B] text-2xl max-sm:text-xl max-sm:leading-7 font-semibold leading-10">
-          Learn how to get best out of linksera
+      <div className="flex w-[406px] max-lg:w-full flex-col items-start gap-[17px] flex-shrink-0">
+        <div className="text-[#0F0C1B] font-['DM Sans'] items-start text-2xl max-sm:text-xl font-semibold ">
+          <span>
+          Learn how to get best out of
+          </span>
         </div>
-        <div className="flex w-[357px] max-lg:w-full flex-col items-start gap-2">
-          <div className="text-[rgba(15,12,27,0.60)] font-['Inter'] text-sm font-normal leading-5 tracking-[0.25px]">
+        <span className="text-[#0F0C1B] font-['DM Sans'] items-start text-2xl max-sm:text-xl font-semibold">linksera</span>
+        <ul className="flex w-[357px] max-lg:w-full flex-col items-start gap-2 list-disc pl-5">
+          <li className="text-[rgba(15,12,27,0.60)] font-inter text-sm font-normal leading-5 tracking-[0.25px]">
             How to add your website to the marketplace
-          </div>
-          <div className="text-[rgba(15,12,27,0.60)] font-['Inter'] text-sm font-normal leading-5 tracking-[0.25px]">
+          </li>
+          <li className="text-[rgba(15,12,27,0.60)] font-inter text-sm font-normal leading-5 tracking-[0.25px]">
             Setting pricing and niche/category filters
-          </div>
-          <div className="text-[rgba(15,12,27,0.60)] font-['Inter'] text-sm font-normal leading-5 tracking-[0.25px]">
+          </li>
+          <li className="text-[rgba(15,12,27,0.60)] font-inter text-sm font-normal leading-5 tracking-[0.25px]">
             Uploading sample articles or guidelines
-          </div>
-          <div className="text-[rgba(15,12,27,0.60)] font-['Inter'] text-sm font-normal leading-5 tracking-[0.25px]">
+          </li>
+          <li className="text-[rgba(15,12,27,0.60)] font-inter text-sm font-normal leading-5 tracking-[0.25px]">
             Editing or updating your website listing anytime
-          </div>
-          <div className="text-[rgba(15,12,27,0.60)] font-['Inter'] text-sm font-normal leading-5 tracking-[0.25px]">
+          </li>
+          <li className="text-[rgba(15,12,27,0.60)] font-inter text-sm font-normal leading-5 tracking-[0.25px]">
             Tips to make your listing stand out to buyers
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
 
       <div className="w-[628px] max-lg:w-full max-lg:max-w-[500px] max-sm:h-[200px] h-[321px] max-lg:h-[280px] flex-shrink-0 rounded-md relative overflow-hidden bg-[#0F0C1B]">
