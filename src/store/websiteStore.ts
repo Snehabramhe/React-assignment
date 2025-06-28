@@ -114,7 +114,7 @@ const initialFormData: WebsiteFormData = {
   allowOtherLinks: true,
   linkTypes: "brand-only",
   otherContentRules: "",
-  preconditionsAccepted: true,
+  preconditionsAccepted: false,
 };
 
 const initialFilters: WebsiteFilters = {
@@ -172,12 +172,13 @@ export const useWebsiteStore = create<WebsiteStore>((set, get) => ({
 
   addWebsite: (website) =>
     set((state) => {
-      const newWebsites = [...state.websites, website];
+      const newWebsites = [website, ...state.websites];
       const totalPages = Math.ceil(newWebsites.length / state.itemsPerPage);
       return {
         websites: newWebsites,
         filteredWebsites: newWebsites,
-        totalPages,
+        totalPages: totalPages > 0 ? totalPages : 1,
+        currentPage: 1, // Reset to first page when adding new website
       };
     }),
 

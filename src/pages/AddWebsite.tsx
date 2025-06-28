@@ -7,6 +7,8 @@ import { ArticleSpecificationForm } from "../components/sections/ArticleSpecific
 import { Navbar } from "../components/layout";
 
 export const AddWebsite: React.FC = () => {
+  const [resetKey, setResetKey] = React.useState(0);
+
   return (
     <div className="min-h-screen w-full overflow-hidden">
       <Navbar activeTab="My websites" />
@@ -24,10 +26,12 @@ export const AddWebsite: React.FC = () => {
 
           {/* Content Sections */}
           <div className="flex flex-col items-center gap-[73px] w-full">
-            <PreconditionsSection /> {/*// COMPLETE */}
+            <PreconditionsSection resetKey={resetKey} /> {/*// COMPLETE */}
             <WebsiteDetailsForm />
             <CreateOfferForm />
-            <ArticleSpecificationForm />
+            <ArticleSpecificationForm
+              onReset={() => setResetKey((prev) => prev + 1)}
+            />
           </div>
         </div>
       </div>

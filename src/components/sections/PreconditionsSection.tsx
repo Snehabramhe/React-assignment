@@ -5,12 +5,24 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "../ui/Button";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
+import { useWebsiteStore } from "../../store/websiteStore";
 
-export function PreconditionsSection() {
-  const [isaccepted, setIsaccepted] = useState(false);
+interface PreconditionsSectionProps {
+  resetKey?: number;
+}
+
+export function PreconditionsSection({ resetKey }: PreconditionsSectionProps) {
+  const { formData, updateFormData } = useWebsiteStore();
+  const isaccepted = formData.preconditionsAccepted;
   const [openItem, setOpenItem] = useState<string>("");
+
+  // Reset accordion state when resetKey changes
+  React.useEffect(() => {
+    setOpenItem("");
+  }, [resetKey]);
+
   console.log(openItem);
 
   return (
@@ -59,7 +71,9 @@ export function PreconditionsSection() {
             {isaccepted ? (
               <button
                 className="bg-[#34C7591A] px-4 py-2 rounded-full flex items-center gap-1"
-                onClick={() => setIsaccepted(!isaccepted)}
+                onClick={() =>
+                  updateFormData({ preconditionsAccepted: !isaccepted })
+                }
               >
                 <RightIcon />
                 <p>Accepted</p>
@@ -68,7 +82,7 @@ export function PreconditionsSection() {
               <Button
                 size="sm"
                 className="bg-[#613FDD] text-white px-16 py-2"
-                onClick={() => setIsaccepted(!isaccepted)}
+                onClick={() => updateFormData({ preconditionsAccepted: true })}
               >
                 Accept
               </Button>

@@ -11,6 +11,7 @@ const MyWebsites: React.FC = () => {
   const navigate = useNavigate();
 
   const {
+    websites,
     filteredWebsites,
     filters,
     currentPage,
@@ -21,13 +22,19 @@ const MyWebsites: React.FC = () => {
     applyFilters,
   } = useWebsiteStore();
 
-  // Apply filters when component mounts or filters change
+  // Apply filters when component mounts, filters change, or websites change
   useEffect(() => {
     applyFilters();
-  }, [filters, applyFilters]);
+  }, [filters, applyFilters, websites.length]);
 
   const handleAddWebsite = () => {
     navigate("/add-website");
+  };
+
+  const handleEditWebsite = (websiteId: string) => {
+    console.log("Edit website with ID:", websiteId);
+    // You can navigate to an edit page or open a modal here
+    // navigate(`/edit-website/${websiteId}`);
   };
 
   const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
@@ -63,15 +70,15 @@ const MyWebsites: React.FC = () => {
     {
       key: "domain",
       label: "Website",
-      className: "min-w-[240px] w-[266px]",
+      className: "w-[220px]",
     },
     {
       key: "country",
       label: "Country",
-      className: "w-[146px]",
+      className: "w-[120px]",
       render: (_, website) => (
-        <div className="flex items-center gap-1  justify-start whitespace-nowrap">
-          <span className="gap-1">{website.country.flag}</span>
+        <div className="flex items-center gap-1 justify-start whitespace-nowrap">
+          <span className="text-lg">{website.country.flag}</span>
           <span className="text-[#0F0C1B]">{website.country.name}</span>
         </div>
       ),
@@ -79,23 +86,57 @@ const MyWebsites: React.FC = () => {
     {
       key: "language",
       label: "Language",
-      className: "w-[140px]",
+      className: "w-[110px]",
     },
     {
       key: "category",
       label: "Category",
-      className: "min-w-[240px] w-[240px]",
+      className: "w-[220px]",
     },
     {
       key: "otherCategories",
       label: "Other categories",
-      className: "min-w-[240px] w-[240px]",
+      className: "w-[240px]",
+      render: (otherCategories) => (
+        <div className="text-left">{otherCategories}</div>
+      ),
     },
     {
       key: "greyNiches",
       label: "Grey niches",
-      className: "min-w-[240px] w-[280px]",
+      className: "w-[200px]",
       render: (greyNiches) => renderGreyNichesIcons(greyNiches as string[]),
+    },
+    {
+      key: "id",
+      label: "Action",
+      className: "w-[30px]",
+      render: (_, website) => (
+        <div className="flex items-center justify-center">
+          <button
+            onClick={() => handleEditWebsite(website.id)}
+            className="p-2 hover:bg-gray-100 rounded-md transition-colors"
+            title="Edit website"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-[#0F0C1B]"
+            >
+              <path
+                d="M11.334 2.00004C11.5091 1.82494 11.7169 1.68605 11.9457 1.59129C12.1745 1.49653 12.4197 1.44775 12.6673 1.44775C12.9149 1.44775 13.1601 1.49653 13.3889 1.59129C13.6177 1.68605 13.8255 1.82494 14.0007 2.00004C14.1758 2.17513 14.3147 2.383 14.4094 2.61178C14.5042 2.84055 14.553 3.08575 14.553 3.33337C14.553 3.58099 14.5042 3.82619 14.4094 4.05497C14.3147 4.28374 14.1758 4.49161 14.0007 4.66671L5.00065 13.6667L1.33398 14.6667L2.33398 11L11.334 2.00004Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      ),
     },
   ];
 
@@ -130,11 +171,13 @@ const MyWebsites: React.FC = () => {
 
           {/* Table Section */}
           <div className="mt-4 w-full max-lg:max-w-full">
-            <Table
-              columns={columns}
-              data={currentWebsites}
-              className="w-full"
-            />
+            <div className="overflow-x-auto">
+              <Table
+                columns={columns}
+                data={currentWebsites}
+                className="w-full"
+              />
+            </div>
 
             {/* Pagination */}
             <div className="w-full font-dm-sans text-sm text-[#0F0C1B] font-medium whitespace-nowrap leading-none max-lg:max-w-full max-lg:whitespace-normal">

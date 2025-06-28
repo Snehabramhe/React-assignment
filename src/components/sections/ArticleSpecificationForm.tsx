@@ -1,5 +1,7 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useWebsiteStore } from "../../store/websiteStore";
+import type { Website } from "../../types";
 
 interface RadioProps {
   value: string;
@@ -46,6 +48,7 @@ interface RangeInputsProps {
   maxValue: number;
   onMinChange: (value: number) => void;
   onMaxChange: (value: number) => void;
+  resetKey?: number;
 }
 
 const RangeInputs: React.FC<RangeInputsProps> = ({
@@ -53,15 +56,31 @@ const RangeInputs: React.FC<RangeInputsProps> = ({
   maxValue,
   onMinChange,
   onMaxChange,
+  resetKey,
 }) => {
+  const [minInput, setMinInput] = React.useState("");
+  const [maxInput, setMaxInput] = React.useState("");
+
+  // Reset local state when resetKey changes
+  React.useEffect(() => {
+    setMinInput("");
+    setMaxInput("");
+  }, [resetKey]);
+
   return (
     <div className="flex pl-6 flex-col items-start gap-2.5 relative">
       <div className="flex w-[237px] h-10 justify-between items-center relative">
         <div className="flex w-[95px] h-10 px-3 py-2 flex-col justify-center items-start gap-2.5 flex-shrink-0 rounded-md border border-[#EAEAEA] relative bg-white">
           <input
             type="number"
-            value=""
-            onChange={(e) => onMinChange(parseInt(e.target.value) || 0)}
+            value={minInput}
+            onChange={(e) => {
+              const value = e.target.value;
+              setMinInput(value);
+              const numValue = parseInt(value) || 0;
+              onMinChange(numValue);
+              console.log("Min value updated:", numValue);
+            }}
             placeholder="Min"
             className="w-full h-auto p-0 border-0 text-[rgba(15,12,27,0.40)] font-inter text-sm font-normal leading-5 tracking-[0.25px] bg-transparent focus:ring-0 focus:outline-none text-left"
           />
@@ -70,8 +89,14 @@ const RangeInputs: React.FC<RangeInputsProps> = ({
         <div className="flex w-[95px] h-10 px-3 py-2 flex-col justify-center items-start gap-2.5 flex-shrink-0 rounded-md border border-[#EAEAEA] relative bg-white">
           <input
             type="number"
-            value=""
-            onChange={(e) => onMaxChange(parseInt(e.target.value) || 0)}
+            value={maxInput}
+            onChange={(e) => {
+              const value = e.target.value;
+              setMaxInput(value);
+              const numValue = parseInt(value) || 0;
+              onMaxChange(numValue);
+              console.log("Max value updated:", numValue);
+            }}
             placeholder="Max"
             className="w-full h-auto p-0 border-0 text-[rgba(15,12,27,0.40)] font-inter text-sm font-normal leading-5 tracking-[0.25px] bg-transparent focus:ring-0 focus:outline-none text-left"
           />
@@ -81,8 +106,110 @@ const RangeInputs: React.FC<RangeInputsProps> = ({
   );
 };
 
-export const ArticleSpecificationForm: React.FC = () => {
-  const { formData, updateFormData } = useWebsiteStore();
+interface ArticleSpecificationFormProps {
+  onReset?: () => void;
+}
+
+export const ArticleSpecificationForm: React.FC<
+  ArticleSpecificationFormProps
+> = ({ onReset }) => {
+  const { formData, updateFormData, resetForm, addWebsite } = useWebsiteStore();
+  const [resetKey, setResetKey] = React.useState(0);
+  const navigate = useNavigate();
+
+  const handleSave = () => {
+    // Save the current form data (it's already in the store via updateFormData calls)
+    console.log("=== SENDING DATA TO STORE ===");
+    console.log("Complete Form Data:", formData);
+    console.log("User Input Details:", {
+      websiteUrl: formData.websiteUrl,
+      primaryLanguage: formData.primaryLanguage,
+      majorityTrafficCountry: formData.majorityTrafficCountry,
+      categories: formData.categories,
+      description: formData.description,
+      writingIncluded: formData.writingIncluded,
+      wordCountPolicy: formData.wordCountPolicy,
+      minWords: formData.minWords,
+      maxWords: formData.maxWords,
+      allowDofollow: formData.allowDofollow,
+      linkTypes: formData.linkTypes,
+      taggingPolicy: formData.taggingPolicy,
+      linksToAdvertiser: formData.linksToAdvertiser,
+      minLinksToAdvertiser: formData.minLinksToAdvertiser,
+      maxLinksToAdvertiser: formData.maxLinksToAdvertiser,
+      allowOtherLinks: formData.allowOtherLinks,
+      otherContentRules: formData.otherContentRules,
+      preconditionsAccepted: formData.preconditionsAccepted,
+      guestPostingPrice: formData.guestPostingPrice,
+      linkInsertionPrice: formData.linkInsertionPrice,
+      homepageLinkPrice: formData.homepageLinkPrice,
+    });
+
+    // Create website entry for the table (only 6 columns: website url, country, language, category, other categories, grey niches)
+    const newWebsite: Website = {
+      id: Date.now().toString(), // Simple ID generation
+      domain: formData.websiteUrl || "example.com",
+      country: {
+        name: formData.majorityTrafficCountry || "United States",
+        flag:
+          formData.majorityTrafficCountry === "Germany"
+            ? "🇩🇪"
+            : formData.majorityTrafficCountry === "United States"
+              ? "🇺🇸"
+              : "🇺🇸",
+      },
+      language: formData.primaryLanguage || "English",
+      category:
+        formData.categories.length > 0
+          ? formData.categories[0]
+          : "Not specified",
+      otherCategories:
+        formData.categories.length > 1
+          ? formData.categories.slice(1).join(", ")
+          : "None",
+      greyNiches: [
+        "https://cdn.builder.io/api/v1/image/assets/TEMP/65740ec271dd5b8345c32e4b574820220c225ef3?placeholderIfAbsent=true",
+        "https://cdn.builder.io/api/v1/image/assets/TEMP/36deee2070e39f486f835591b7c0cb8b25d206cd?placeholderIfAbsent=true",
+        "https://cdn.builder.io/api/v1/image/assets/TEMP/955167939b698a3a4bf25addb8e8548e67467e7d?placeholderIfAbsent=true",
+        "https://cdn.builder.io/api/v1/image/assets/TEMP/da4fd0fa59a401fd221301f290d8f9aec9f94f91?placeholderIfAbsent=true",
+        "https://cdn.builder.io/api/v1/image/assets/TEMP/276377205453bf585a93eff4205ad5d9fecadbb8?placeholderIfAbsent=true",
+        "https://cdn.builder.io/api/v1/image/assets/TEMP/d77a02bc3c4c40629ccb66f68aa0949ef1da8831?placeholderIfAbsent=true",
+      ],
+    };
+
+    console.log("=== CREATING WEBSITE ENTRY FOR TABLE ===");
+    console.log("Website URL:", formData.websiteUrl);
+    console.log("Country:", formData.majorityTrafficCountry);
+    console.log("Language:", formData.primaryLanguage);
+    console.log("Categories:", formData.categories);
+    console.log(
+      "Primary Category:",
+      formData.categories.length > 0 ? formData.categories[0] : "Not specified",
+    );
+    console.log(
+      "Other Categories:",
+      formData.categories.length > 1
+        ? formData.categories.slice(1).join(", ")
+        : "None",
+    );
+    console.log("Final Website Object for Table:", newWebsite);
+
+    // Add website to store
+    addWebsite(newWebsite);
+    console.log("Website added to store successfully!");
+    console.log("Check store state after adding website...");
+
+    alert("Website data saved successfully and added to your websites list!");
+
+    // Reset the entire form after saving
+    resetForm();
+    setResetKey((prev) => prev + 1); // Trigger RangeInputs reset
+    onReset?.(); // Trigger accordion reset
+    console.log("Form has been reset to initial values");
+
+    // Navigate to MyWebsites page to show the new entry
+    navigate("/");
+  };
 
   return (
     <div className="flex w-full max-w-[1283px] flex-col items-start gap-5 relative mx-auto p-5 box-border">
@@ -153,6 +280,7 @@ export const ArticleSpecificationForm: React.FC = () => {
                 maxValue={formData.maxWords}
                 onMinChange={(value) => updateFormData({ minWords: value })}
                 onMaxChange={(value) => updateFormData({ maxWords: value })}
+                resetKey={resetKey}
               />
             </div>
 
@@ -304,6 +432,7 @@ export const ArticleSpecificationForm: React.FC = () => {
                 onMaxChange={(value) =>
                   updateFormData({ maxLinksToAdvertiser: value })
                 }
+                resetKey={resetKey}
               />
             </div>
 
@@ -391,11 +520,11 @@ export const ArticleSpecificationForm: React.FC = () => {
 
       {/* Action Buttons */}
       <div className="flex items-center gap-4 relative">
-        <button className="flex h-8 px-3 py-1 justify-center items-center gap-2 rounded-md bg-[#613FDD] text-white font-inter text-sm font-medium leading-5 cursor-pointer hover:bg-[#5235c7] transition-colors">
+        <button
+          onClick={handleSave}
+          className="flex h-8 px-3 py-1 justify-center items-center gap-2 rounded-md bg-[#613FDD] text-white font-inter text-sm font-medium leading-5 cursor-pointer hover:bg-[#5235c7] transition-colors"
+        >
           Save
-        </button>
-        <button className="flex h-8 px-3 py-1 justify-center items-center gap-2 rounded-md border border-[#EAEAEA] bg-white text-[#0F0C1B] font-inter text-sm font-medium leading-5 cursor-pointer hover:bg-[#f5f5f5] transition-colors">
-          Cancel
         </button>
       </div>
     </div>
