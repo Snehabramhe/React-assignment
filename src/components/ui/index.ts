@@ -1,4 +1,4 @@
-export { Button } from "./Button";
+//export { Button } from "./Button";
 export { default as Dropdown } from "./Dropdown";
 export { default as Table } from "./Table";
 export { FormInput } from "./FormInput";
