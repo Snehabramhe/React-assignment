@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWebsiteStore } from "../store/websiteStore";
-import { Button } from "../components/ui/Button";
+import  Button  from "../components/ui/Button";
 import Table from "../components/ui/Table";
 import { Pagination } from "../components/ui/Pagination";
 import type { TableColumn, Website } from "../types";
